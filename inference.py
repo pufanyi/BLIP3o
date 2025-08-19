@@ -8,7 +8,8 @@ import os
 
 @dataclass
 class T2IConfig:
-    model_path: str = "/fsx/home/jiuhai.chen/BLIP3o-NEXT/models/debug"
+    # model_path: str = "/fsx/home/jiuhai.chen/BLIP3o-NEXT/models/debug"
+    model_path: str = "BLIP3o/BLIP3o-NEXT-Pretrain-3B"
     device: str = "cuda:0"
     dtype: torch.dtype = torch.bfloat16
     # generation config
