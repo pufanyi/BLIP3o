@@ -133,6 +133,16 @@ def train():
 
     parser = transformers.HfArgumentParser((ModelArguments, DataArguments, TrainingArguments))
     model_args, data_args, training_args = parser.parse_args_into_dataclasses()
+    if model_args.version == "qwen_1_5" and model_args.model_name_or_path == "facebook/opt-125m":
+        model_args.model_name_or_path = "Qwen/Qwen1.5-0.5B"
+        rank0_print(f"model_name_or_path is not set, but version is {model_args.version}. Defaulting model_name_or_path to {model_args.model_name_or_path}")
+    
+    print("======== Data Arguments =========")
+    print(data_args)
+    print("======== Model Arguments =========")
+    print(model_args)
+    print("======== Training Arguments =========")
+    print(training_args)
 
     local_rank = training_args.local_rank
 

@@ -11,6 +11,12 @@ conda  activate  your env
 export WANDB_API_KEY='your wandb key'
 export HF_HOME=/your/hf/home/
 
+# Fix tokenizers parallelism warning
+export TOKENIZERS_PARALLELISM=false
+
+# Fix PyTorch Dynamo graph break warnings
+export TORCHDYNAMO_CAPTURE_SCALAR_OUTPUTS=1
+
 AR_BACKBONE=Your_Pretrain_CKPT
 DIFFUSION=Efficient-Large-Model/SANA1.5_1.6B_1024px_diffusers
 

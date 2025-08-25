@@ -24,8 +24,9 @@ echo "RUN_NAME: ${RUN_NAME}"
 LOCAL_DIR="models/${RUN_NAME}"
 
 
-srun torchrun --nproc_per_node=8  --nnodes=$SLURM_NNODES \
-    --rdzv_id=$SLURM_JOB_ID --rdzv_backend=c10d --rdzv_endpoint=$HOSTNAME:29501 blip3o/train/train.py \
+torchrun --nproc_per_node=1  --nnodes=1 \
+    blip3o/train/train.py \
+
     --deepspeed scripts/zero1.json \
     --num_image_tokens 65536 \
     --num_scale_tokens 3 \

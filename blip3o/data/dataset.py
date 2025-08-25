@@ -11,6 +11,7 @@ from typing import Dict, List, Optional, Sequence
 import pyarrow.parquet as pq
 import torch
 import transformers
+from huggingface_hub import snapshot_download
 import yaml
 from PIL import Image, ImageFile
 from torch.utils.data import Dataset
@@ -172,7 +173,9 @@ class LazySupervisedMixDataset(Dataset):
         list_data_dict = []
 
 
-        train_dataset = load_dataset("webdataset", data_files='/fsx/home/jiuhai.chen/soda/overfit.tar', split="train", num_proc=1, cache_dir='/fsx/sfr/data/jiuhai/webdataset')
+        path = snapshot_download(repo_id='BLIP3o/BLIP3o-60k', repo_type='dataset')
+        train_dataset = load_dataset("webdataset", data_files=glob.glob(os.path.join(path, "*.tar")), split="train", num_proc=1)
+
         train_dataset = train_dataset.rename_column("jpg", "image")
         train_dataset = train_dataset.add_column('type', len(train_dataset) * ['T2I'])
         train_dataset = train_dataset.remove_columns([col for col in train_dataset.column_names if not col in (
@@ -232,7 +235,6 @@ class LazySupervisedMixDataset(Dataset):
 
         while True:
             sources = self.list_data_dict[i]
-
 
             if sources["type"] == "T2I":
 
@@ -308,6 +310,7 @@ class LazySupervisedMixDataset(Dataset):
                 data_dict["target_image"] = [self.process_target_image(f) for f in images]
 
             data_dict["ids"] = self.list_data_dict[i]["id"] if "id" in self.list_data_dict[i] else "unk"
+
             return data_dict
 
 
